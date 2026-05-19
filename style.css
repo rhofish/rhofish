@@ -1,0 +1,220 @@
+/* ============================================
+   Orcinus 通用样式
+   ============================================ */
+
+/* --- 基础重置 --- */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  background: linear-gradient(to bottom, #4169e1, #00ffff);
+  font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* --- 页面容器 --- */
+.wrapper {
+  position: absolute;
+  inset: 0;
+  overflow: hidden auto;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+/* --- 背景视差层 --- */
+.bg-parallax {
+  position: fixed;
+  inset: -10%;
+  background-image: url(./bg.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transform: scale(1.1);
+  transition: transform 0.1s ease-out;
+  will-change: transform;
+  z-index: -1;
+}
+
+/* --- 卡片组件 --- */
+.card {
+  width: 100%;
+  max-width: 50rem;
+  height: auto;
+  min-height: 30rem;
+  padding: 2.5rem 3rem;
+  margin: auto;
+  border-radius: 1.25rem;
+  cursor: pointer;
+  overflow: hidden;
+  user-select: none;
+  position: relative;
+
+  /* 毛玻璃效果 */
+  backdrop-filter: blur(24px) saturate(1.2);
+  -webkit-backdrop-filter: blur(24px) saturate(1.2);
+  background-color: rgba(255, 255, 255, 0.25);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+
+  /* 边框装饰 */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+
+  /* 过渡动画 */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* --- 卡片头部 --- */
+.card-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.card-domain {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+  letter-spacing: 0.05em;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.card-divider {
+  border: none;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  margin: 1.25rem 0;
+}
+
+/* --- 卡片正文 --- */
+.card-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 18rem;
+}
+
+.card-title {
+  text-align: center;
+  color: #1a1a2e;
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1.6;
+  letter-spacing: 0.15em;
+  font-family: "STKaiti", "KaiTi", "楷体", serif;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  position: relative;
+  padding: 0 1rem;
+}
+
+/* --- 点击波纹效果 --- */
+.dot {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.6),
+    rgba(255, 255, 255, 0.1)
+  );
+  animation: ripple 1s ease-out forwards;
+}
+
+@keyframes ripple {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 0.8;
+  }
+  100% {
+    width: 500px;
+    height: 500px;
+    opacity: 0;
+  }
+}
+
+/* --- 气泡特效 --- */
+.bubble-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.bubble {
+  position: absolute;
+  bottom: -80px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(255, 255, 255, 0.4),
+    rgba(255, 255, 255, 0.05)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow:
+    inset 0 -4px 8px rgba(255, 255, 255, 0.15),
+    0 0 12px rgba(255, 255, 255, 0.05);
+  animation: bubbleRise linear forwards;
+}
+
+@keyframes bubbleRise {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0;
+  }
+  5% {
+    opacity: 0.7;
+  }
+  90% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(-110vh) scale(0.6);
+    opacity: 0;
+  }
+}
+
+/* --- 响应式适配 --- */
+@media (max-width: 640px) {
+  .card {
+    max-width: 90%;
+    min-height: 20rem;
+    padding: 1.5rem 1.25rem;
+    border-radius: 1rem;
+  }
+
+  .card-title {
+    font-size: 1.5rem;
+    letter-spacing: 0.1em;
+  }
+
+  .card-title::before,
+  .card-title::after {
+    font-size: 2rem;
+  }
+
+  .card-body {
+    min-height: 12rem;
+  }
+}
