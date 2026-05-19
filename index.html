@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>ruoo</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+
+  <body>
+    <!-- 背景视差层 -->
+    <div class="bg-parallax" id="bgParallax"></div>
+
+    <!-- 气泡容器 -->
+    <div class="bubble-container" id="bubbleContainer"></div>
+
+    <div class="wrapper">
+      <div class="card">
+        <div class="card-header">
+          <p class="card-domain">ruoo.top</p>
+        </div>
+        <hr class="card-divider" />
+        <div class="card-body">
+          <p class="card-title">海内存知己，天涯若比邻</p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // 背景视差 - 随鼠标位置晃动
+      (function () {
+        const bg = document.getElementById("bgParallax");
+        if (!bg) return;
+
+        const maxOffset = 3;
+
+        document.addEventListener("mousemove", (ev) => {
+          const x = (ev.clientX / window.innerWidth - 0.5) * 2;
+          const y = (ev.clientY / window.innerHeight - 0.5) * 2;
+          const offsetX = -x * maxOffset;
+          const offsetY = -y * maxOffset;
+          bg.style.transform = `scale(1.2) translate(${offsetX}%, ${offsetY}%)`;
+        });
+      })();
+
+      // 气泡特效 - 不规则气泡从底部升起
+      (function () {
+        const container = document.getElementById("bubbleContainer");
+        if (!container) return;
+
+        function createBubble() {
+          const bubble = document.createElement("div");
+          bubble.classList.add("bubble");
+
+          // 随机大小 20px ~ 120px
+          const size = 20 + Math.random() * 100;
+          // 随机水平位置
+          const left = Math.random() * 100;
+          // 随机动画时长 6s ~ 14s
+          const duration = 6 + Math.random() * 8;
+          // 随机水平飘移
+          const drift = (Math.random() - 0.5) * 60;
+
+          bubble.style.width = `${size}px`;
+          bubble.style.height = `${size}px`;
+          bubble.style.left = `${left}%`;
+          bubble.style.animationDuration = `${duration}s`;
+
+          // 添加水平飘移
+          if (drift !== 0) {
+            bubble.style.setProperty("--drift", `${drift}px`);
+            bubble.style.animation = `bubbleRise ${duration}s linear forwards`;
+          }
+
+          container.appendChild(bubble);
+
+          // 动画结束后移除
+          setTimeout(() => {
+            if (bubble.parentNode) {
+              bubble.remove();
+            }
+          }, duration * 1000);
+        }
+
+        // 初始生成一批气泡
+        for (let i = 0; i < 8; i++) {
+          setTimeout(createBubble, i * 400);
+        }
+
+        // 持续生成气泡（间隔 600ms ~ 1500ms）
+        function scheduleNext() {
+          const delay = 600 + Math.random() * 900;
+          setTimeout(() => {
+            createBubble();
+            scheduleNext();
+          }, delay);
+        }
+        scheduleNext();
+      })();
+
+      // 点击波纹效果
+      (function (selector) {
+        const card = document.querySelector(selector);
+        card.addEventListener("mousedown", (ev) => {
+          const dot = document.createElement("i");
+          dot.classList.add("dot");
+          const rect = card.getBoundingClientRect();
+          dot.style.left = `${ev.clientX - rect.left}px`;
+          dot.style.top = `${ev.clientY - rect.top}px`;
+          card.appendChild(dot);
+          setTimeout(() => {
+            card.removeChild(dot);
+          }, 1000);
+        });
+      })(".card");
+    </script>
+  </body>
+</html>
