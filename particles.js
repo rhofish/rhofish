@@ -509,7 +509,7 @@ const sim = new ParticleLifeSim(canvas, {
   particleCount: 1000,
   speciesCount: 8,
   interactionRadius: 100,
-  forceStrength: 250,
+  forceStrength: 200,
   damping: 3,
   bounce: false,
   baseRadius: 2,
