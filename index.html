@@ -12,11 +12,13 @@
     <!-- 背景视差层 -->
     <div class="bg-parallax" id="bgParallax"></div>
 
-    <!-- 气泡容器 -->
-    <div class="bubble-container" id="bubbleContainer"></div>
+    <canvas id="particles"></canvas>
 
     <div class="wrapper">
-      <div class="card">
+      <div class="card" id="mainCard">
+        <button class="card-close" id="closeBtn" aria-label="关闭">
+          &times;
+        </button>
         <div class="card-header">
           <p class="card-domain">ruoo.top</p>
         </div>
@@ -26,6 +28,8 @@
         </div>
       </div>
     </div>
+
+    <script type="module" src="./particles.js"></script>
 
     <script>
       // 背景视差 - 随鼠标位置晃动
@@ -44,64 +48,29 @@
         });
       })();
 
-      // 气泡特效 - 不规则气泡从底部升起
+      // 关闭按钮 - 隐藏卡片
       (function () {
-        const container = document.getElementById("bubbleContainer");
-        if (!container) return;
+        const closeBtn = document.getElementById("closeBtn");
+        const card = document.getElementById("mainCard");
+        if (!closeBtn || !card) return;
 
-        function createBubble() {
-          const bubble = document.createElement("div");
-          bubble.classList.add("bubble");
-
-          // 随机大小 20px ~ 120px
-          const size = 20 + Math.random() * 100;
-          // 随机水平位置
-          const left = Math.random() * 100;
-          // 随机动画时长 6s ~ 14s
-          const duration = 6 + Math.random() * 8;
-          // 随机水平飘移
-          const drift = (Math.random() - 0.5) * 60;
-
-          bubble.style.width = `${size}px`;
-          bubble.style.height = `${size}px`;
-          bubble.style.left = `${left}%`;
-          bubble.style.animationDuration = `${duration}s`;
-
-          // 添加水平飘移
-          if (drift !== 0) {
-            bubble.style.setProperty("--drift", `${drift}px`);
-            bubble.style.animation = `bubbleRise ${duration}s linear forwards`;
-          }
-
-          container.appendChild(bubble);
-
-          // 动画结束后移除
-          setTimeout(() => {
-            if (bubble.parentNode) {
-              bubble.remove();
-            }
-          }, duration * 1000);
-        }
-
-        // 初始生成一批气泡
-        for (let i = 0; i < 8; i++) {
-          setTimeout(createBubble, i * 400);
-        }
-
-        // 持续生成气泡（间隔 600ms ~ 1500ms）
-        function scheduleNext() {
-          const delay = 600 + Math.random() * 900;
-          setTimeout(() => {
-            createBubble();
-            scheduleNext();
-          }, delay);
-        }
-        scheduleNext();
+        closeBtn.addEventListener("click", (ev) => {
+          ev.stopPropagation(); // 阻止触发卡片的点击波纹
+          card.classList.add("hidden");
+          // 动画结束后隐藏
+          card.addEventListener(
+            "animationend",
+            () => {
+              card.style.display = "none";
+            },
+            { once: true }
+          );
+        });
       })();
 
       // 点击波纹效果
-      (function (selector) {
-        const card = document.querySelector(selector);
+      (function () {
+        const card = document.querySelector(".card");
         card.addEventListener("mousedown", (ev) => {
           const dot = document.createElement("i");
           dot.classList.add("dot");
@@ -113,7 +82,7 @@
             card.removeChild(dot);
           }, 1000);
         });
-      })(".card");
+      })();
     </script>
   </body>
 </html>
