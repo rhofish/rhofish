@@ -9,9 +9,6 @@
   </head>
 
   <body>
-    <!-- 背景视差层 -->
-    <div class="bg-parallax" id="bgParallax"></div>
-
     <canvas id="particles"></canvas>
 
     <div class="wrapper">
@@ -32,22 +29,6 @@
     <script type="module" src="./particles.js"></script>
 
     <script>
-      // 背景视差 - 随鼠标位置晃动
-      (function () {
-        const bg = document.getElementById("bgParallax");
-        if (!bg) return;
-
-        const maxOffset = 3;
-
-        document.addEventListener("mousemove", (ev) => {
-          const x = (ev.clientX / window.innerWidth - 0.5) * 2;
-          const y = (ev.clientY / window.innerHeight - 0.5) * 2;
-          const offsetX = -x * maxOffset;
-          const offsetY = -y * maxOffset;
-          bg.style.transform = `scale(1.2) translate(${offsetX}%, ${offsetY}%)`;
-        });
-      })();
-
       // 关闭按钮 - 隐藏卡片
       (function () {
         const closeBtn = document.getElementById("closeBtn");
